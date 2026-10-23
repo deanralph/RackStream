@@ -35,6 +35,10 @@ Open http://127.0.0.1:8324. For trusted LAN access, explicitly change the listen
 
 On the development machine, a user-local extracted official OpenSCAD AppImage lives under `~/.local/opt/openscad/`; the app detects it if no configured/system executable exists. Its supplemental GL libraries are user-local too: no host packages were installed. A normal OpenSCAD installation is preferred on other machines.
 
+## AppStream / Podman
+
+The LAN deployment runs at **http://10.0.0.100:8324** as a rootless Podman container with user-systemd startup and automatic restart. See the [AppStream deployment guide](deploy/README.md) for the Containerfile, service installation, rebuild/update commands, resource limits and verification notes. No public tunnel is configured.
+
 ## Inputs and geometry
 
 - All dimensions are mm. Width is left-to-right, depth front-to-rear, height bottom-to-top.

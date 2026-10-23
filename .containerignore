@@ -1,0 +1,11 @@
+*
+!Containerfile
+!requirements.txt
+!app.py
+!rackstream.py
+!scad/
+!scad/**
+!static/
+!static/**
+!templates/
+!templates/**
