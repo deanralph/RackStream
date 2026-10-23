@@ -1,0 +1,7 @@
+-r requirements.txt
+pytest==9.1.1
+trimesh==5.1.1
+numpy==2.5.4
+networkx==3.7
+ruff==0.17.2
+pylint==4.1.3

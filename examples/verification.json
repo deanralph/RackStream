@@ -1,0 +1,46 @@
+[
+  {
+    "sample": "switch",
+    "dimensions": [
+      254.0,
+      63.4,
+      43.65
+    ],
+    "watertight": true,
+    "components": 1,
+    "bytes": 226617
+  },
+  {
+    "sample": "square-no-feet",
+    "dimensions": [
+      254.0,
+      83.4,
+      43.65
+    ],
+    "watertight": true,
+    "components": 1,
+    "bytes": 210446
+  },
+  {
+    "sample": "maximum-radius",
+    "dimensions": [
+      254.0,
+      83.4,
+      43.65
+    ],
+    "watertight": true,
+    "components": 1,
+    "bytes": 226363
+  },
+  {
+    "sample": "deep-3U",
+    "dimensions": [
+      254.0,
+      243.4,
+      132.55
+    ],
+    "watertight": true,
+    "components": 1,
+    "bytes": 603220
+  }
+]

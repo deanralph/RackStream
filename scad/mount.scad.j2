@@ -1,0 +1,49 @@
+// RackStream: millimetres; X across rack, Y toward rear, Z upward.
+// Front-face radius applies to the aperture, not the device footprint.
+$fn = 48;
+panel_width = {{ panel_width }};
+panel_height = {{ panel_height }};
+wall = {{ wall }};
+opening_width = {{ opening_width }};
+opening_height = {{ opening_height }};
+opening_radius = {{ opening_radius }};
+opening_bottom = {{ opening_bottom }};
+tray_width = {{ tray_width }};
+tray_depth = {{ tray_depth }};
+tray_top = {{ tray_top }};
+tray_bottom = {{ tray_bottom }};
+body_bottom = {{ body_bottom }};
+body_height = {{ body_height }};
+hole_spacing = {{ hole_spacing }};
+hole_z = {{ hole_z }};
+
+module rounded_rectangle(width, height, radius) {
+    // Circumscribe the analytic arc: an inscribed polygon can remove the
+    // entire fit clearance on large radii. Clip to keep exact outer bounds.
+    intersection() {
+        translate([-width/2,0]) square([width,height]);
+        hull() {
+            for (x = [-width/2 + radius, width/2 - radius])
+                for (z = [radius, height - radius])
+                    translate([x,z]) circle(r=radius/cos(180/$fn));
+        }
+    }
+}
+
+union() {
+    difference() {
+        translate([-panel_width/2, 0, 0]) cube([panel_width, wall, panel_height]);
+        translate([0, wall+1, opening_bottom]) rotate([90,0,0])
+            linear_extrude(height=wall+2)
+                rounded_rectangle(opening_width, opening_height, opening_radius);
+        for (x = [-hole_spacing/2, hole_spacing/2])
+            for (z = hole_z)
+                translate([x, wall+1, z]) rotate([90,0,0])
+                    cylinder(d=7, h=wall+2);
+    }
+    // Joined material, not floating supports: the tray overlaps the faceplate.
+    translate([-tray_width/2, 0, tray_bottom]) cube([tray_width, tray_depth, wall]);
+    for (x = [-tray_width/2, tray_width/2-wall])
+        translate([x, 0, tray_bottom])
+            cube([wall, tray_depth, body_bottom + min(body_height/2, 12) - tray_bottom]);
+}

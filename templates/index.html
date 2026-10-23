@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en" class="ds-theme">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="var(--ds-bg)">
+  <title>RackStream — A place in the rack.</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='driftstream.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+  <script defer src="{{ url_for('static', filename='app.js') }}"></script>
+</head>
+<body>
+  <a class="skip-link ds-link" href="#rack-form">Skip to dimensions</a>
+  <div class="shell">
+    <header class="masthead">
+      <a class="wordmark" href="/" aria-label="RackStream home"><span class="brand-mark" aria-hidden="true">▤</span> Rack<span>Stream</span></a>
+      <button id="theme-toggle" type="button" class="ds-button ds-button--secondary ds-button--compact" aria-pressed="false" aria-label="Light theme">Light theme</button>
+    </header>
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <p class="ds-label">DriftStream / Workshop tools / 10-inch rack</p>
+        <h1 class="ds-heading" id="page-title">A place in the rack.</h1>
+        <p>Measure your device. Make its mount. A custom faceplate and open-rear cradle, ready to print.</p>
+      </section>
+      <div class="workbench">
+        <form id="rack-form" class="ds-panel form-panel" novalidate>
+          <div class="section-heading"><h2>01 <span>Device dimensions</span></h2><span class="ds-badge">ALL MM</span></div>
+          <p class="helper">Measure the enclosure, not its cables. Leave room at the open rear for connectors and airflow.</p>
+          <fieldset class="field-grid">
+            <legend class="sr-only">Device measurements in millimetres</legend>
+            <label class="ds-field" for="width">Width<input class="ds-input" id="width" name="width" type="number" min="0.1" step="any" required value="130"></label>
+            <label class="ds-field" for="depth">Depth<input class="ds-input" id="depth" name="depth" type="number" min="0.1" step="any" required value="60"></label>
+            <label class="ds-field" for="height">Height<input class="ds-input" id="height" name="height" type="number" min="0.1" step="any" required value="25"></label>
+            <label class="ds-field" for="feet">Feet height<input class="ds-input" id="feet" name="feet" type="number" min="0" step="any" required value="3"></label>
+          </fieldset>
+          <label class="check-field"><input id="height_includes_feet" name="height_includes_feet" type="checkbox"> Measured height includes the feet</label>
+          <div class="section-heading second-heading"><h2>02 <span>Fit &amp; structure</span></h2></div>
+          <fieldset class="field-grid">
+            <legend class="sr-only">Mount fit settings</legend>
+            <label class="ds-field" for="radius">Front corner radius<input class="ds-input" id="radius" name="radius" type="number" min="0" step="any" required value="3" aria-describedby="radius-help"></label>
+            <label class="ds-field" for="clearance">Fit clearance<input class="ds-input" id="clearance" name="clearance" type="number" min="0" step="any" required value="0.4" aria-describedby="fit-help"></label>
+            <label class="ds-field" for="wall">Wall thickness<input class="ds-input" id="wall" name="wall" type="number" min="0.1" step="any" required value="3"></label>
+            <label class="ds-field" for="units">Rack height<select class="ds-input" name="units" id="units"><option value="auto">Auto · smallest fit</option><option value="1">1U</option><option value="2">2U</option><option value="3">3U</option></select></label>
+          </fieldset>
+          <p class="helper" id="radius-help">Radius describes the device’s front face corners only.</p>
+          <p class="helper" id="fit-help">Clearance adds fit allowance around the device; the server checks the final geometry.</p>
+          <div id="form-error" class="error" role="alert" hidden></div>
+          <button id="generate" type="submit" class="ds-button generate" disabled>Generate STL ↓</button>
+          <p class="helper download-note" id="download-status" role="status">Checking your dimensions…</p>
+        </form>
+        <section class="preview-panel ds-panel" aria-labelledby="preview-title">
+          <div class="preview-heading"><div><p class="ds-label">Live layout</p><h2 id="preview-title">Your mount, taking shape.</h2></div><div class="view-switch" role="group" aria-label="Preview view"><button class="ds-button ds-button--secondary ds-button--small" type="button" data-view="iso" aria-pressed="true">Iso</button><button class="ds-button ds-button--secondary ds-button--small" type="button" data-view="front" aria-pressed="false">Front</button></div></div>
+          <div class="drawing" id="drawing" aria-busy="true"><svg id="preview" viewBox="-150 -130 360 220" role="img" aria-labelledby="svg-title svg-description"><title id="svg-title">Rack mount preview</title><desc id="svg-description">Waiting for server layout.</desc></svg><span class="drawing-index" aria-hidden="true">RS / 001</span></div>
+          <div class="drawing-caption"><span><i class="swatch mount-swatch" aria-hidden="true"></i> Printed mount</span><span><i class="swatch device-swatch" aria-hidden="true"></i> Your device</span></div>
+          <p class="helper preview-note">Illustrative SVG preview, not the exact STL. Translucent device is not included in the print.</p>
+          <p id="preview-status" role="status" class="preview-status">Calculating layout…</p>
+          <dl class="measurements"><div><dt>Mount / W × D × H</dt><dd id="mount-dimensions">—</dd></div><div><dt>Rack height</dt><dd id="rack-height">—</dd></div><div><dt>Tray top / Z offset</dt><dd id="tray-offset">—</dd></div></dl>
+          <aside class="printer-note"><p class="ds-label">Bambu Lab P1S · tight fit</p><p>The faceplate is 254 mm wide on a 256 mm bed. Check orientation and slicer limits; a brim may exceed the bed.</p></aside>
+          <ul id="warnings" class="warnings" aria-label="Layout warnings"></ul>
+        </section>
+      </div>
+      <aside class="build-note"><span class="ds-label">Before you print</span><p>Open rear. Friction/strap-free cradle, <strong>not locked retention.</strong> Physical fit and load testing required. PETG recommended; this design is not certified for structural or safety-critical use.</p></aside>
+    </main>
+    <footer><span>RackStream <span aria-hidden="true">/</span> a DriftStream workshop tool</span><span>Measure twice. Print once.</span></footer>
+  </div>
+</body>
+</html>

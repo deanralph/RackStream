@@ -1,0 +1,14 @@
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B"]
+
+[tool.pylint.format]
+max-line-length = 100
+
+[tool.pylint.design]
+max-locals = 22
+
+[tool.pylint.messages_control]
+disable = ["consider-using-with"]
